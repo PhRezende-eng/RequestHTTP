@@ -9,8 +9,6 @@ class Products with ChangeNotifier {
   var _url = Uri.parse(
       'https://flutter-test-coder-default-rtdb.firebaseio.com/products.json');
 
-  List<Product> _items = [];
-
   List<Product> get items => [..._items];
 
   int get itemsCount {
@@ -21,28 +19,35 @@ class Products with ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
+  List<Product> _items = [];
+
   Future<void> lodProducts() async {
     var response = await http.get(_url);
 
     Map<String, dynamic> data = jsonDecode(response.body);
 
+    _items
+        .clear(); // faz com que limpe o estado/lista de produtos sempre que iniciar a tela
+
     if (data != null) {
-      data.forEach((key, value) {
-        _items.add(
-          Product(
-            id: key,
-            title: value['title'],
-            description: value['description'],
-            price: value['price'],
-            imageUrl: value['imageUrl'],
-            isFavorite: value['isFavorite'],
-          ),
-        );
-        notifyListeners();
-      });
+      data.forEach(
+        (key, value) {
+          _items.add(
+            Product(
+              id: key,
+              title: value['title'],
+              description: value['description'],
+              price: value['price'],
+              imageUrl: value['imageUrl'],
+              isFavorite: value['isFavorite'],
+            ),
+          );
+          notifyListeners();
+        },
+      );
     }
 
-    print(data);
+    print('****************$data');
 
     // return Future.value();
 
@@ -98,14 +103,14 @@ class Products with ChangeNotifier {
   }
 }
 
-  // bool _showFavoriteOnly = false;
-  
-  // void showFavoriteOnly() {
-  //   _showFavoriteOnly = true;
-  //   notifyListeners();
-  
-  // }
-  // void showAll() {
-  //   _showFavoriteOnly = false;
-  //   notifyListeners();
-  // }
+// bool _showFavoriteOnly = false;
+
+// void showFavoriteOnly() {
+//   _showFavoriteOnly = true;
+//   notifyListeners();
+
+// }
+// void showAll() {
+//   _showFavoriteOnly = false;
+//   notifyListeners();
+// }
