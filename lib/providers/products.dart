@@ -6,9 +6,6 @@ import 'package:flutter/material.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
-  var _url = Uri.parse(
-      'https://flutter-test-coder-default-rtdb.firebaseio.com/products.json');
-
   List<Product> get items => [..._items];
 
   int get itemsCount {
@@ -22,12 +19,14 @@ class Products with ChangeNotifier {
   List<Product> _items = [];
 
   Future<void> lodProducts() async {
-    var response = await http.get(_url);
+    final _url = Uri.parse(
+        'https://flutter-test-coder-default-rtdb.firebaseio.com/products.json');
+
+    final response = await http.get(_url);
 
     Map<String, dynamic> data = jsonDecode(response.body);
 
-    _items
-        .clear(); // faz com que limpe o estado/lista de produtos sempre que iniciar a tela
+    _items.clear();
 
     if (data != null) {
       data.forEach(
@@ -46,15 +45,12 @@ class Products with ChangeNotifier {
         },
       );
     }
-
-    print('****************$data');
-
-    // return Future.value();
-
-    // http.delete(url, headers: {});
   }
 
   Future<void> addProduct(Product newProduct) async {
+    final _url = Uri.parse(
+        'https://flutter-test-coder-default-rtdb.firebaseio.com/products.json');
+
     final response = await http.post(
       _url,
       body: json.encode({
@@ -77,26 +73,51 @@ class Products with ChangeNotifier {
     );
 
     notifyListeners();
-
-    //json.decoded ou jsonDecode =  transforma um json em map
-    //json.encode ou jsonEncode = transforma um map em json
   }
 
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) async {
     if (product == null || product.id == null) {
       return;
     }
 
     final index = _items.indexWhere((prod) => prod.id == product.id);
+
     if (index >= 0) {
+      final _urlId = Uri.parse(
+          'https://flutter-test-coder-default-rtdb.firebaseio.com/products/${product.id}.json');
+
+      await http.patch(
+        _urlId,
+        body: jsonEncode(
+          {
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'imageUrl': product.imageUrl,
+          },
+        ),
+      );
+
       _items[index] = product;
       notifyListeners();
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
     final index = _items.indexWhere((prod) => prod.id == id);
     if (index >= 0) {
+      final _urlId = Uri.parse(
+          'https://flutter-test-coder-default-rtdb.firebaseio.com/products/$id.json');
+
+      await http.delete(
+        _urlId,
+        body: jsonEncode(
+          {
+            id: id,
+          },
+        ),
+      );
+
       _items.removeWhere((prod) => prod.id == id);
       notifyListeners();
     }
@@ -114,3 +135,9 @@ class Products with ChangeNotifier {
 //   _showFavoriteOnly = false;
 //   notifyListeners();
 // }
+
+//json.decoded ou jsonDecode =  transforma um json em map
+//json.encode ou jsonEncode = transforma um map em json
+
+//  _items
+//         .clear(); // faz com que limpe o estado/lista de produtos sempre que iniciar a tela
