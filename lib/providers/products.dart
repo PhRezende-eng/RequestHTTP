@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
+import 'package:shop/exceptions/http_exception.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
@@ -106,20 +107,22 @@ class Products with ChangeNotifier {
   Future<void> deleteProduct(String id) async {
     final index = _items.indexWhere((prod) => prod.id == id);
     if (index >= 0) {
-      final _urlId = Uri.parse(
-          'https://flutter-test-coder-default-rtdb.firebaseio.com/products/$id.json');
-
-      await http.delete(
-        _urlId,
-        body: jsonEncode(
-          {
-            id: id,
-          },
-        ),
-      );
+      final product = _items[index];
 
       _items.removeWhere((prod) => prod.id == id);
       notifyListeners();
+
+      final _urlId = Uri.parse(
+          'https://flutter-test-coder-default-rtdb.firebaseio.com/products/${product.id}.json');
+
+      final response = await http.delete(_urlId);
+
+      if (response.statusCode >= 400) {
+        _items.insert(index, product);
+        notifyListeners();
+        throw HttpException(
+            'Ocorreu um erro, por isso, o item foi devolvido a lista de produtos!');
+      }
     }
   }
 }
@@ -141,3 +144,13 @@ class Products with ChangeNotifier {
 
 //  _items
 //         .clear(); // faz com que limpe o estado/lista de produtos sempre que iniciar a tela
+
+
+// await http.delete(
+//   _urlId,
+//   body: jsonEncode(
+//     {
+//       id: id,
+//     },
+//   ),
+// );
