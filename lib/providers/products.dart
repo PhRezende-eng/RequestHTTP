@@ -127,17 +127,7 @@ class Products with ChangeNotifier {
   }
 }
 
-// bool _showFavoriteOnly = false;
 
-// void showFavoriteOnly() {
-//   _showFavoriteOnly = true;
-//   notifyListeners();
-
-// }
-// void showAll() {
-//   _showFavoriteOnly = false;
-//   notifyListeners();
-// }
 
 //json.decoded ou jsonDecode =  transforma um json em map
 //json.encode ou jsonEncode = transforma um map em json
@@ -154,3 +144,28 @@ class Products with ChangeNotifier {
 //     },
 //   ),
 // );
+
+// Future<void> toggleFavorite() async {
+//     _toggleFavorite();
+
+//     try {
+//       final url = Uri.parse(
+//           'https://flutter-test-coder-default-rtdb.firebaseio.com/products/$id.json');
+
+//       final response = await http.patch(
+//         url,
+//         body: jsonEncode(
+//           {
+//             'isFavorite': isFavorite,
+//           },
+//         ),
+//       );
+
+//       if (response.statusCode >= 400) {
+//         notifyListeners();
+//         print('error');
+//       }
+//     } catch (e) {
+//       _toggleFavorite();
+//     }
+//   }
