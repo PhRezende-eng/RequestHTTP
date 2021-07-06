@@ -5,7 +5,13 @@ import '../widgets/cart_item_widget.dart';
 import '../providers/cart.dart';
 import '../providers/orders.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  @override
+  _CartScreenState createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  bool isLoanding = true;
   @override
   Widget build(BuildContext context) {
     final Cart cart = Provider.of(context);
@@ -41,12 +47,22 @@ class CartScreen extends StatelessWidget {
                   ),
                   Spacer(),
                   TextButton(
-                    child: Text('COMPRAR'),
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false)
-                          .addOrder(cart);
-                      cart.clear();
-                    },
+                    child: isLoanding
+                        ? Text('COMPRAR')
+                        : CircularProgressIndicator(),
+                    onPressed: cart.totalAmount > 0
+                        ? () async {
+                            setState(() {
+                              isLoanding = false;
+                            });
+                            await Provider.of<Orders>(context, listen: false)
+                                .addOrder(cart);
+                            setState(() {
+                              isLoanding = true;
+                            });
+                            cart.clear();
+                          }
+                        : null,
                   ),
                 ],
               ),
