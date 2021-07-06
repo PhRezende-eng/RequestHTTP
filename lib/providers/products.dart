@@ -118,7 +118,8 @@ class Products with ChangeNotifier {
       final response = await http.delete(_urlId);
 
       if (response.statusCode >= 400) {
-        _items.insert(index, product);
+        _items.insert(index,
+            product); // ---> aqui ele devolver para a lista igual estava antes
         notifyListeners();
         throw HttpException(
             'Ocorreu um erro, por isso, o item foi devolvido a lista de produtos!');
