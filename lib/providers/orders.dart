@@ -30,11 +30,44 @@ class Orders with ChangeNotifier {
     return _items.length;
   }
 
+  Future<void> loadOrder() async {
+    try {
+      final url = Uri.parse(
+          "https://flutter-test-coder-default-rtdb.firebaseio.com/orders.json");
+      final response = await http.get(url);
+      Map<String, dynamic> data = jsonDecode(response.body);
+      print(data);
+      if (data != null) {
+        data.forEach((id, data) {
+          _items.add(
+            Order(
+              id: id,
+              total: data['total'],
+              date: DateTime.parse(data['date']),
+              products: (data['products'] as List<dynamic>)
+                  .map(
+                    (e) => CartItem(
+                      id: e['id'],
+                      productId: e['productId'],
+                      title: e['title'],
+                      quantity: e['quantity'],
+                      price: e['price'],
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
+        });
+      }
+    } catch (e) {}
+  }
+
   Future<void> addOrder(Cart cart) async {
     try {
       final data = DateTime.now();
       final url = Uri.parse(
           "https://flutter-test-coder-default-rtdb.firebaseio.com/orders.json");
+      // loadOrder();
       final response = await http.post(
         url,
         body: jsonEncode(
