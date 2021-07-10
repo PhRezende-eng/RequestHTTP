@@ -133,8 +133,7 @@ class Products with ChangeNotifier {
 //json.decoded ou jsonDecode =  transforma um json em map
 //json.encode ou jsonEncode = transforma um map em json
 
-//  _items
-//         .clear(); // faz com que limpe o estado/lista de produtos sempre que iniciar a tela
+//  _items.clear(); // faz com que limpe o estado/lista de produtos sempre que iniciar a tela
 
 
 // await http.delete(
