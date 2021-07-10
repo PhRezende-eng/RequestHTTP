@@ -42,7 +42,6 @@ class Product with ChangeNotifier {
 
       if (response.statusCode >= 400) {
         notifyListeners();
-        print('error');
       }
     } catch (e) {
       _toggleFavorite();

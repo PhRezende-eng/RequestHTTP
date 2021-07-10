@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
+import 'package:shop/exceptions/http_exception.dart';
 
 import './cart.dart';
 
@@ -36,30 +37,32 @@ class Orders with ChangeNotifier {
           "https://flutter-test-coder-default-rtdb.firebaseio.com/orders.json");
       final response = await http.get(url);
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data);
+      _items
+          .clear(); //serve pra limpar a lista e não adicionar a mesma quando der o refresh
       if (data != null) {
         data.forEach((id, data) {
-          _items.add(
-            Order(
-              id: id,
-              total: data['total'],
-              date: DateTime.parse(data['date']),
-              products: (data['products'] as List<dynamic>)
-                  .map(
-                    (e) => CartItem(
-                      id: e['id'],
-                      productId: e['productId'],
-                      title: e['title'],
-                      quantity: e['quantity'],
-                      price: e['price'],
-                    ),
-                  )
-                  .toList(),
-            ),
-          );
+          _items.add(Order(
+            id: id,
+            total: data['total'],
+            date: DateTime.parse(data['date']),
+            products: (data['products'] as List<dynamic>).map((e) {
+              return CartItem(
+                id: e['id'],
+                productId: e['productId'],
+                title: e['title'],
+                quantity: e['quantity'],
+                price: e['price'],
+              );
+            }).toList(),
+          ));
         });
+        // _items = _items.reversed.toList();
+        // return Future.value();
+        notifyListeners();
       }
-    } catch (e) {}
+    } catch (e) {
+      throw HttpException(e);
+    }
   }
 
   Future<void> addOrder(Cart cart) async {
