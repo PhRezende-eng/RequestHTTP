@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:shop/exceptions/http_exception.dart';
+import 'package:shop/utils/constantes.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
@@ -20,7 +21,7 @@ class Products with ChangeNotifier {
   List<Product> _items = [];
 
   Future<void> lodProducts() async {
-    final _url = Uri.parse('PRODUCTS_API_URL.json');
+    final _url = Uri.parse('${Constantes.PRODUCTS_API_URL}.json');
 
     final response = await http.get(_url);
 
@@ -48,7 +49,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product newProduct) async {
-    final _url = Uri.parse('PRODUCTS_API_URL.json');
+    final _url = Uri.parse('${Constantes.PRODUCTS_API_URL}.json');
 
     final response = await http.post(
       _url,
@@ -82,7 +83,8 @@ class Products with ChangeNotifier {
     final index = _items.indexWhere((prod) => prod.id == product.id);
 
     if (index >= 0) {
-      final _urlId = Uri.parse('PRODUCTS_API_URL/${product.id}.json');
+      final _urlId =
+          Uri.parse('${Constantes.PRODUCTS_API_URL}/${product.id}.json');
 
       await http.patch(
         _urlId,
@@ -109,7 +111,8 @@ class Products with ChangeNotifier {
       _items.removeWhere((prod) => prod.id == id);
       notifyListeners();
 
-      final _urlId = Uri.parse('PRODUCTS_API_URL/${product.id}.json');
+      final _urlId =
+          Uri.parse('${Constantes.PRODUCTS_API_URL}/${product.id}.json');
 
       final response = await http.delete(_urlId);
 
@@ -146,7 +149,7 @@ class Products with ChangeNotifier {
 
 //     try {
 //       final url = Uri.parse(
-//           'PRODUCTS_API_URL/$id.json');
+//           '${Constantes.PRODUCTS_API_URL}/$id.json');
 
 //       final response = await http.patch(
 //         url,

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:shop/exceptions/http_exception.dart';
+import 'package:shop/utils/constantes.dart';
 
 import './cart.dart';
 
@@ -33,7 +34,7 @@ class Orders with ChangeNotifier {
 
   Future<void> loadOrder() async {
     try {
-      final url = Uri.parse("ORDERS_API_URL.json");
+      final url = Uri.parse("${Constantes.ORDERS_API_URL}.json");
       final response = await http.get(url);
       Map<String, dynamic> data = jsonDecode(response.body);
       _items
@@ -67,7 +68,7 @@ class Orders with ChangeNotifier {
   Future<void> addOrder(Cart cart) async {
     try {
       final data = DateTime.now();
-      final url = Uri.parse("ORDERS_API_URL.json");
+      final url = Uri.parse("${Constantes.ORDERS_API_URL}.json");
       // loadOrder();
       final response = await http.post(
         url,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/utils/constantes.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -28,7 +29,7 @@ class Product with ChangeNotifier {
     _toggleFavorite();
 
     try {
-      final url = Uri.parse('PRODUCTS_API_URL/$id.json');
+      final url = Uri.parse('${Constantes.PRODUCTS_API_URL}/$id.json');
 
       final response = await http.patch(
         url,
