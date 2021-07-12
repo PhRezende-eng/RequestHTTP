@@ -28,8 +28,7 @@ class Product with ChangeNotifier {
     _toggleFavorite();
 
     try {
-      final url = Uri.parse(
-          'https://flutter-test-coder-default-rtdb.firebaseio.com/products/$id.json');
+      final url = Uri.parse('PRODUCTS_API_URL/$id.json');
 
       final response = await http.patch(
         url,

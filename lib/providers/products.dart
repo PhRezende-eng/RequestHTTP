@@ -20,8 +20,7 @@ class Products with ChangeNotifier {
   List<Product> _items = [];
 
   Future<void> lodProducts() async {
-    final _url = Uri.parse(
-        'https://flutter-test-coder-default-rtdb.firebaseio.com/products.json');
+    final _url = Uri.parse('PRODUCTS_API_URL.json');
 
     final response = await http.get(_url);
 
@@ -49,8 +48,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product newProduct) async {
-    final _url = Uri.parse(
-        'https://flutter-test-coder-default-rtdb.firebaseio.com/products.json');
+    final _url = Uri.parse('PRODUCTS_API_URL.json');
 
     final response = await http.post(
       _url,
@@ -84,8 +82,7 @@ class Products with ChangeNotifier {
     final index = _items.indexWhere((prod) => prod.id == product.id);
 
     if (index >= 0) {
-      final _urlId = Uri.parse(
-          'https://flutter-test-coder-default-rtdb.firebaseio.com/products/${product.id}.json');
+      final _urlId = Uri.parse('PRODUCTS_API_URL/${product.id}.json');
 
       await http.patch(
         _urlId,
@@ -112,8 +109,7 @@ class Products with ChangeNotifier {
       _items.removeWhere((prod) => prod.id == id);
       notifyListeners();
 
-      final _urlId = Uri.parse(
-          'https://flutter-test-coder-default-rtdb.firebaseio.com/products/${product.id}.json');
+      final _urlId = Uri.parse('PRODUCTS_API_URL/${product.id}.json');
 
       final response = await http.delete(_urlId);
 
@@ -150,7 +146,7 @@ class Products with ChangeNotifier {
 
 //     try {
 //       final url = Uri.parse(
-//           'https://flutter-test-coder-default-rtdb.firebaseio.com/products/$id.json');
+//           'PRODUCTS_API_URL/$id.json');
 
 //       final response = await http.patch(
 //         url,

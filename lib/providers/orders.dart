@@ -33,8 +33,7 @@ class Orders with ChangeNotifier {
 
   Future<void> loadOrder() async {
     try {
-      final url = Uri.parse(
-          "https://flutter-test-coder-default-rtdb.firebaseio.com/orders.json");
+      final url = Uri.parse("ORDERS_API_URL.json");
       final response = await http.get(url);
       Map<String, dynamic> data = jsonDecode(response.body);
       _items
@@ -68,8 +67,7 @@ class Orders with ChangeNotifier {
   Future<void> addOrder(Cart cart) async {
     try {
       final data = DateTime.now();
-      final url = Uri.parse(
-          "https://flutter-test-coder-default-rtdb.firebaseio.com/orders.json");
+      final url = Uri.parse("ORDERS_API_URL.json");
       // loadOrder();
       final response = await http.post(
         url,
