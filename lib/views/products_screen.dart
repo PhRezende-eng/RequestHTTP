@@ -8,7 +8,7 @@ import '../utils/app_routes.dart';
 
 class ProductsScreen extends StatelessWidget {
   Future<void> _loadScreen(BuildContext context) async {
-    await Provider.of<Products>(context, listen: false).lodProducts();
+    await Provider.of<Products>(context, listen: false).loadProducts();
   }
 
   @override

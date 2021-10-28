@@ -20,7 +20,7 @@ class Products with ChangeNotifier {
 
   List<Product> _items = [];
 
-  Future<void> lodProducts() async {
+  Future<void> loadProducts() async {
     final _url = Uri.parse('${Constantes.PRODUCTS_API_URL}.json');
 
     final response = await http.get(_url);
@@ -30,21 +30,19 @@ class Products with ChangeNotifier {
     _items.clear();
 
     if (data != null) {
-      data.forEach(
-        (key, value) {
-          _items.add(
-            Product(
-              id: key,
-              title: value['title'],
-              description: value['description'],
-              price: value['price'],
-              imageUrl: value['imageUrl'],
-              isFavorite: value['isFavorite'],
-            ),
-          );
-          notifyListeners();
-        },
-      );
+      data.forEach((key, value) {
+        _items.add(
+          Product(
+            id: key,
+            title: value['title'],
+            description: value['description'],
+            price: value['price'],
+            imageUrl: value['imageUrl'],
+            isFavorite: value['isFavorite'],
+          ),
+        );
+        notifyListeners();
+      });
     }
   }
 

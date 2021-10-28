@@ -27,15 +27,11 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     // carregar os produtos
     super.initState();
 
-    Provider.of<Products>(context, listen: false).lodProducts().then(
-      (value) {
-        setState(
-          () {
-            _isLoading = false;
-          },
-        );
-      },
-    );
+    Provider.of<Products>(context, listen: false).loadProducts().then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override

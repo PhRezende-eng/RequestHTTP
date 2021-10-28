@@ -12,13 +12,14 @@ class Product with ChangeNotifier {
   final String imageUrl;
   bool isFavorite;
 
-  Product(
-      {this.id,
-      @required this.title,
-      @required this.description,
-      @required this.price,
-      @required this.imageUrl,
-      this.isFavorite = false});
+  Product({
+    this.id,
+    this.isFavorite = false,
+    @required this.title,
+    @required this.description,
+    @required this.price,
+    @required this.imageUrl,
+  });
 
   void _toggleFavorite() {
     isFavorite = !isFavorite;
